@@ -41,3 +41,22 @@ func ReadString(reader *bufio.Reader) string {
 
 	return strings.TrimRight(valueStr, "\n")
 }
+
+func ReadRowOfNumbers(reader *bufio.Reader) []int {
+	var valueStr, _ = reader.ReadString('\n')
+	var fields = strings.Fields(valueStr)
+	var result, _ = ToNumberArray(fields)
+
+	return result
+}
+
+func StrRowsToArrayOfNumbers(rows []string) [][]int {
+	var result = make([][]int, len(rows))
+
+	for i := 0; i < len(rows); i++ {
+		var fields = strings.Fields(rows[i])
+		result[i], _ = ToNumberArray(fields)
+	}
+
+	return result
+}
