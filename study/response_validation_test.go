@@ -3,36 +3,23 @@ package study_test
 import (
 	"bufio"
 	"ikremniou/route256/study"
+	"ikremniou/route256/study/utils"
 	"os"
 	"path"
-	"strconv"
 	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func readNumber(reader *bufio.Reader) int {
-	var valueStr, _ = reader.ReadString('\n')
-	var value, _ = strconv.Atoi(strings.TrimSpace(valueStr))
-
-	return value
-}
-
-func readValues(reader *bufio.Reader) string {
-	var valueStr, _ = reader.ReadString('\n')
-
-	return strings.TrimRight(valueStr, "\n")
-}
-
 func getInputData(reader *bufio.Reader) []study.ResponseValidationInput {
-	var inputSize = readNumber(reader)
+	var inputSize = utils.ReadNumber(reader)
 	var input = make([]study.ResponseValidationInput, inputSize)
 
 	for i := 0; i < inputSize; i++ {
-		var numberOrValues = readNumber(reader)
-		var actual = readValues(reader)
-		var expected = readValues(reader)
+		var numberOrValues = utils.ReadNumber(reader)
+		var actual = utils.ReadString(reader)
+		var expected = utils.ReadString(reader)
 
 		input[i] = study.ResponseValidationInput{
 			NumberOfValues: numberOrValues,

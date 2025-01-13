@@ -1,8 +1,8 @@
 package study
 
 import (
+	"ikremniou/route256/study/utils"
 	"slices"
-	"strconv"
 	"strings"
 )
 
@@ -12,30 +12,17 @@ type ResponseValidationInput struct {
 	ExpectStr      string
 }
 
-func toNumberArray(rowString []string) ([]int, error) {
-	var numbers = make([]int, len(rowString))
-	for i := 0; i < len(rowString); i++ {
-		var number, err = strconv.Atoi(rowString[i])
-		if err != nil {
-			return nil, err
-		}
-		numbers[i] = number
-	}
-
-	return numbers, nil
-}
-
 func determineYesNo(actual string, expected string) string {
 	if len(actual) != len(expected) {
 		return "no"
 	}
 
-	actualNumbers, err := toNumberArray(strings.Split(actual, " "))
+	actualNumbers, err := utils.ToNumberArray(strings.Split(actual, " "))
 	if err != nil {
 		return "no"
 	}
 
-	expectedNumbers, err := toNumberArray(strings.Split(expected, " "))
+	expectedNumbers, err := utils.ToNumberArray(strings.Split(expected, " "))
 	if err != nil {
 		return "no"
 	}
