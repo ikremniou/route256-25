@@ -45,8 +45,7 @@ func getOrderPlannerInputData(reader *bufio.Reader) []study.OrderPlannerInput {
 }
 
 func TestOrderPlanner(t *testing.T) {
-	// var testArray = []string{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "13", "14", "15", "16", "17", "18"}
-	var testArray = []string{"18"}
+	var testArray = []string{"1", "2", "3", "4", "5", "6"}
 
 	for _, testName := range testArray {
 		t.Run(testName, func(t *testing.T) {

@@ -1,7 +1,6 @@
 package study
 
 import (
-	"fmt"
 	"slices"
 	"strconv"
 	"strings"
@@ -19,44 +18,6 @@ type OrderPlannerInput struct {
 	Arrival        []int
 	NumberOfCars   int
 	Schedule       []OrderPlannerCarSchedule
-}
-
-func leftBinarySearch(plans []OrderPlannerCarSchedule, target int) int {
-	var left = 0
-	var right = len(plans) - 1
-	var index = -1
-
-	// 713837032 998778687 228866664 162098512 220833468 235613844 511379452 244654808 90465458 827889431
-	// expected: []string{"3 -1 2 2 2 4 7 7 2 1"}
-	// actual  : []string{"9 -1 2 2 2 4 3 7 2 9"}
-
-	for left <= right {
-		var middle = (left + right) / 2
-
-		if plans[middle].Start <= target {
-			index = middle
-			left = middle + 1
-		} else {
-			right = middle - 1
-		}
-	}
-
-	fmt.Println(index)
-
-	if left >= len(plans) {
-		return -1
-	}
-
-	var leftVal = plans[left]
-	for left < len(plans) && plans[left] == leftVal {
-		if plans[left].Start <= target && plans[left].End >= target && plans[left].Capacity > 0 {
-			return left
-		}
-
-		left += 1
-	}
-
-	return -1
 }
 
 func OrderPlanner(input []OrderPlannerInput) []string {
@@ -82,31 +43,32 @@ func OrderPlanner(input []OrderPlannerInput) []string {
 		})
 
 		var currResult = make([]string, input[i].NumberOfOrders)
+		var machineCurrIndex = 0
+
 		for j := 0; j < input[i].NumberOfOrders; j++ {
-			var arrival = input[i].Arrival[j]
+			var currentArrival = input[i].Arrival[j]
 
-			var machineNumber = -1
-			// binary search?
-			// var index = leftBinarySearch(intervals, arrival)
-			// if index >= 0 {
-			// 	machineNumber = intervals[index].MachineNumber
-			// 	intervals[index].Capacity--
-			// }
+			var machineFoundIndex = -1
+			for machineCurrIndex < input[i].NumberOfCars &&
+				machineFoundIndex == -1 &&
+				intervals[machineCurrIndex].Start <= currentArrival {
 
-			for k := 0; k < len(intervals) && machineNumber == -1; k++ {
-				if intervals[k].Start <= arrival && intervals[k].End >= arrival && intervals[k].Capacity > 0 {
-					machineNumber = intervals[k].MachineNumber
-					intervals[k].Capacity--
+				var car = &intervals[machineCurrIndex]
+				if car.Capacity > 0 && car.Start <= currentArrival && car.End >= currentArrival {
+					car.Capacity -= 1
+					machineFoundIndex = car.MachineNumber
+				}
+
+				if car.Capacity == 0 || car.End < currentArrival {
+					machineCurrIndex += 1
 				}
 			}
 
-			if j != 0 && j%100 == 0 {
-				intervals = slices.DeleteFunc(intervals, func(interval OrderPlannerCarSchedule) bool {
-					return interval.Capacity == 0 || interval.End < arrival
-				})
+			if machineFoundIndex == -1 {
+				currResult[arrivalsMap[currentArrival]] = "-1"
+			} else {
+				currResult[arrivalsMap[currentArrival]] = strconv.Itoa(machineFoundIndex)
 			}
-
-			currResult[arrivalsMap[arrival]] = strconv.Itoa(machineNumber)
 		}
 
 		result[i] = strings.Join(currResult, " ")
