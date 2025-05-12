@@ -1,0 +1,6 @@
+kafka:
+  host: kafka
+  port: 9091
+  order_topic: loms.order-events
+  consumer_group_id: notifier-group
+  brokers: kafka:9091

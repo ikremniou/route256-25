@@ -1,0 +1,13 @@
+version: '3'
+name: hw-bundle-local
+
+include:
+  - docker-compose.dbs.yaml
+  - docker-compose.kafka.yaml
+  - docker-compose.sre.local.yaml
+
+services:
+  products:
+    image: gitlab-registry.ozon.dev/go/classroom-16/students/homework-draft/products:latest
+    ports:
+      - "8082:8082"

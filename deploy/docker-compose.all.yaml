@@ -1,0 +1,29 @@
+version: '3'
+name: hw-bundle-ci
+
+include:
+  - docker-compose.dbs.yaml
+  - docker-compose.kafka.yaml
+  - docker-compose.sre.yaml
+
+services:
+  cart:
+    build: ../cart
+    depends_on:
+      - loms
+    ports:
+      - "8080:8080"
+    
+  loms:
+    build: ../loms
+    depends_on:
+      - loms-db
+    ports:
+      - "8083:8083"
+      - "8084:8084"
+
+  notifier:
+    build: ../notifier
+
+  product-service:
+    image: gitlab-registry.ozon.dev/go/classroom-16/students/homework-draft/products:latest

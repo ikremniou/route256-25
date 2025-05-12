@@ -1,0 +1,20 @@
+app:
+  edit_interval: 1s
+
+service:
+  host: localhost
+  grpc_port: 8085
+  http_port: 8086
+
+db_shards:
+  - host: localhost
+    port: 5434
+    user: comments-user-1
+    password: comments-password-1
+    db_name: comments_db
+
+  - host: localhost
+    port: 5435
+    user: comments-user-2
+    password: comments-password-2
+    db_name: comments_db

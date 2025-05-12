@@ -1,0 +1,78 @@
+syntax = "proto3";
+package orders.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "route256/loms/api/orders/v1;orders_v1";
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Logistics Order Management System"
+    description: "API for managing orders in the Logistics Order Management System"
+  }
+  schemes: HTTP
+  schemes: HTTPS
+  consumes: "application/json"
+  produces: "application/json"
+  host: "localhost:8084"
+};
+
+service OrdersService {
+  rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse) {
+    option (google.api.http) = {
+      post: "/order/create"
+      body: "*"
+    };
+  }
+  rpc OrderInfo(OrderInfoRequest) returns (OrderInfoResponse) {
+    option (google.api.http) = {get: "/order/info"};
+  }
+  rpc PayOrder(PayOrderRequest) returns (PayOrderResponse) {
+    option (google.api.http) = {
+      post: "/order/pay"
+      body: "*"
+    };
+  }
+  rpc CancelOrder(CancelOrderRequest) returns (CancelOrderResponse) {
+    option (google.api.http) = {
+      post: "/order/cancel"
+      body: "*"
+    };
+  }
+}
+
+message OrderItem {
+  int64 sku = 1 [(buf.validate.field).int64.gt = 0];
+  uint32 count = 2 [(buf.validate.field).uint32.gt = 0];
+}
+
+message CreateOrderRequest {
+  int64 user = 1 [(buf.validate.field).int64.gt = 0];
+  repeated OrderItem items = 2 [(buf.validate.field).repeated.min_items = 1];
+}
+
+message OrderInfoRequest {
+  int64 order_id = 1 [(buf.validate.field).int64.gt = 0];
+}
+
+message PayOrderRequest {
+  int64 order_id = 1 [(buf.validate.field).int64.gt = 0];
+}
+
+message CancelOrderRequest {
+  int64 order_id = 1 [(buf.validate.field).int64.gt = 0];
+}
+
+message CreateOrderResponse {
+  int64 order_id = 1;
+}
+
+message OrderInfoResponse {
+  string status = 1;
+  int64 user = 2;
+  repeated OrderItem items = 3;
+}
+
+message PayOrderResponse {}
+message CancelOrderResponse {}

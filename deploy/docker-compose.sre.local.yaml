@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  prometheus:
+    image: bitnami/prometheus:2.55.1
+    container_name: prometheus
+    ports:
+      - 8090:9090
+    volumes:
+      - ~/route_sre/prometheus:/opt/bitnami/prometheus/data
+      - ./prometheus.local.yml:/opt/bitnami/prometheus/conf/prometheus.yml
+  jaeger:
+    image: jaegertracing/jaeger:2.5.0
+    ports:
+      - 6831:4318
+      - 16686:16686
+  
+  grafana:
+    image: grafana/grafana:10.4.1
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - ~/route_sre/grafana:/var/lib/grafana
+    restart: unless-stopped
+    depends_on:
+      - prometheus
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=password

@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package stocks.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+
+option go_package = "route256/loms/api/stocks/v1;stocks_v1";
+
+service StocksService {
+  rpc StocksInfo(StocksInfoRequest) returns (StocksInfoResponse) {
+    option (google.api.http) = {get: "/stock/info"};
+  }
+}
+
+message StocksInfoRequest {
+  int64 sku = 1 [(buf.validate.field).int64.gt = 0];
+}
+
+message StocksInfoResponse {
+  uint32 count = 1;
+}

@@ -1,0 +1,65 @@
+# More info on config here: https://golangci-lint.run/usage/configuration/#config-file
+run:
+  concurrency: 8
+  timeout: 30m
+  issues-exit-code: 1
+  tests: true
+  exclude-dirs:
+    - bin
+    - vendor
+    - mockgen
+    - var
+    - tmp
+    - e2e
+    a ignore
+  exclude-files:
+    - \.pb\.go$
+    - mock_gen\.go$
+    - \.pb\.gw\.go$
+    - .*test\.go$
+
+output:
+  formats: colored-line-number
+  print-issued-lines: true
+  print-linter-name: true
+
+linters-settings:
+  gocyclo:
+    min-complexity: 30
+  gocognit:
+    min-complexity: 30
+
+linters:
+  disable-all: true
+  enable:
+    - gocognit # : Computes and checks the cognitive complexity of functions [fast: true, auto-fix: false]
+    - gocyclo # : Computes and checks the cyclomatic complexity of functions [fast: true, auto-fix: false]
+    - errcheck
+    - goconst
+    - goimports
+    - gosec
+    - govet
+    - ineffassign
+    - megacheck # (staticcheck + gosimple + unused in one linter)
+    - revive
+    - typecheck
+    - unused
+
+issues:
+  exclude-use-default: false
+  exclude:
+    - SA1019
+    # _ instead of err checks
+    - G104
+    # for "public interface + private struct implementation" cases only!
+    - exported func .* returns unexported type .*, which can be annoying to use
+    - exported func.+returns unexported type.+, which can be annoying to use
+    - exported (method|function|type|const|var) .+? should have comment.+?or be unexported
+    # can be removed in the development phase
+    # - (comment on exported (method|function|type|const)|should have( a package)? comment|comment should be of the form)
+    # not for the active development - can be removed in the stable phase
+    - should have a package comment
+    #    - don't use an underscore in package name
+    # EXC0001 errcheck: Almost all programs ignore errors on these functions and in most cases it's ok
+    - Error return value of .((os\.)?std(out|err)\..*|.*Close|.*Flush|os\.Remove(All)?|.*print(f|ln)?|os\.(Un)?Setenv). is not checked
+    - should check returned error before deferring

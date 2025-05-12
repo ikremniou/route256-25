@@ -1,0 +1,19 @@
+service:
+  host: localhost
+  port: 8080
+  workers: 5
+
+jaeger:
+  host: localhost
+  port: 6831
+
+product_service:
+  host: localhost
+  port: 8082
+  token: testToken
+  limit: 10
+  burst: 10
+
+loms_service:
+  host: localhost
+  port: 8083

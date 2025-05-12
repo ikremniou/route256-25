@@ -1,0 +1,19 @@
+service:
+  host: 0.0.0.0
+  port: 8080
+  workers: 5
+
+jaeger:
+  host: 0.0.0.0
+  port: 6831
+
+product_service:
+  host: product-service
+  port: 8082
+  token: testToken
+  limit: 10
+  burst: 10
+
+loms_service:
+  host: loms
+  port: 8083

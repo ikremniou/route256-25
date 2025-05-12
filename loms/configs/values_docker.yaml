@@ -1,0 +1,30 @@
+service:
+  host: 0.0.0.0
+  grpc_port: 8083
+  http_port: 8084
+  allow_swagger: true
+
+jaeger:
+  host: jaeger
+  port: 6831
+
+db_master:
+  host: loms-db
+  port: 5432
+  user: loms-user
+  password: loms-password
+  db_name: loms_db
+
+db_replica:
+  host: loms-db-replica
+  port: 5433
+  user: loms-user
+  password: loms-password
+  db_name: loms_db
+
+kafka:
+  host: kafka
+  port: 9091
+  order_topic: loms.order-events
+  brokers: kafka:9091
+  poll: 500

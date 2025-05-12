@@ -1,0 +1,28 @@
+version: "2"
+sql:
+  - engine: "postgresql"
+    schema: "migrations"
+    queries: "internal/domain/order/order_repository_pg/order.sql"
+    gen:
+      go:
+        package: "query"
+        out: "internal/domain/order/order_repository_pg/query"
+        sql_package: "pgx/v5"
+
+  - engine: "postgresql"
+    schema: "migrations"
+    queries: "internal/domain/stock/stock_repository_pg/stock.sql"
+    gen:
+      go:
+        package: "query"
+        out: "internal/domain/stock/stock_repository_pg/query"
+        sql_package: "pgx/v5"
+
+  - engine: "postgresql"
+    schema: "migrations"
+    queries: "internal/domain/notifier/outbox.sql"
+    gen:
+      go:
+        package: "query"
+        out: "internal/domain/notifier/query"
+        sql_package: "pgx/v5"
